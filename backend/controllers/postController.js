@@ -60,7 +60,7 @@ const updatePost = asyncHandler(async (req, res) => {
     throw new Error("User not found");
   }
 
-  // Make sure the logged in user matches the goal user
+  // Make sure the logged in user matches the post user
   if (post.user.toString() !== req.user.id) {
     res.status(401);
     throw new Error("User not authorized");
@@ -73,15 +73,15 @@ const updatePost = asyncHandler(async (req, res) => {
   res.status(200).json(updatedPost);
 });
 
-// @desc    Delete goal
-// @route   DELETE /api/goals/:id
+// @desc    Delete post
+// @route   DELETE /api/posts/:id
 // @access  Private
-const deleteGoal = asyncHandler(async (req, res) => {
-  const goal = await Goal.findById(req.params.id);
+const deletePost = asyncHandler(async (req, res) => {
+  const post = await Post.findById(req.params.id);
 
-  if (!goal) {
+  if (!post) {
     res.status(400);
-    throw new Error("Goal not found");
+    throw new Error("Post not found");
   }
 
   // Check for user
@@ -90,13 +90,13 @@ const deleteGoal = asyncHandler(async (req, res) => {
     throw new Error("User not found");
   }
 
-  // Make sure the logged in user matches the goal user
-  if (goal.user.toString() !== req.user.id) {
+  // Make sure the logged in user matches the post user
+  if (post.user.toString() !== req.user.id) {
     res.status(401);
     throw new Error("User not authorized");
   }
 
-  await goal.remove();
+  await post.remove();
 
   res.status(200).json({ id: req.params.id });
 });
@@ -106,5 +106,5 @@ module.exports = {
   getMyPosts,
   createPost,
   updatePost,
-  deleteGoal,
+  deletePost,
 };
