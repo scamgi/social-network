@@ -43,15 +43,15 @@ const createPost = asyncHandler(async (req, res) => {
   res.status(200).json(post);
 });
 
-// @desc    Update goal
-// @route   PUT /api/goals/:id
+// @desc    Update post
+// @route   PUT /api/posts/:id
 // @access  Private
-const updateGoal = asyncHandler(async (req, res) => {
-  const goal = await Goal.findById(req.params.id);
+const updatePost = asyncHandler(async (req, res) => {
+  const post = await Post.findById(req.params.id);
 
-  if (!goal) {
+  if (!post) {
     res.status(400);
-    throw new Error("Goal not found");
+    throw new Error("Post not found");
   }
 
   // Check for user
@@ -61,16 +61,16 @@ const updateGoal = asyncHandler(async (req, res) => {
   }
 
   // Make sure the logged in user matches the goal user
-  if (goal.user.toString() !== req.user.id) {
+  if (post.user.toString() !== req.user.id) {
     res.status(401);
     throw new Error("User not authorized");
   }
 
-  const updatedGoal = await Goal.findByIdAndUpdate(req.params.id, req.body, {
+  const updatedPost = await Post.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
   });
 
-  res.status(200).json(updatedGoal);
+  res.status(200).json(updatedPost);
 });
 
 // @desc    Delete goal
@@ -105,6 +105,6 @@ module.exports = {
   getPostsByUserId,
   getMyPosts,
   createPost,
-  updateGoal,
+  updatePost,
   deleteGoal,
 };

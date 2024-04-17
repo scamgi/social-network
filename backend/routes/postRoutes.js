@@ -4,6 +4,7 @@ const {
   getPostsByUserId,
   createPost,
   getMyPosts,
+  updatePost,
 } = require("../controllers/postController");
 
 const { protect } = require("../middleware/authMiddleware");
@@ -13,5 +14,6 @@ const { protect } = require("../middleware/authMiddleware");
 router.get("/:id", protect, getPostsByUserId);
 router.get("/", protect, getMyPosts);
 router.post("/", protect, createPost);
+router.put("/:id", protect, updatePost);
 
 module.exports = router;
