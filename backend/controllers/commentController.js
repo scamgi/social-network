@@ -2,24 +2,6 @@ const asyncHandler = require("express-async-handler");
 const Comment = require("../models/commentModel");
 const User = require("../models/userModel");
 
-// @desc    Get comments
-// @route   GET /api/comments
-// @access  Private
-// const getPostsByUserId = asyncHandler(async (req, res) => {
-//   const id = req.params.id;
-//   const posts = await Post.find({ user: id });
-//   res.status(200).json(posts);
-// });
-
-// @desc    Get posts
-// @route   GET /api/posts
-// @access  Private
-// const getMyPosts = asyncHandler(async (req, res) => {
-//   const id = req.user.id;
-//   const posts = await Post.find({ user: id });
-//   res.status(200).json(posts);
-// });
-
 // @desc    Get comments of a post
 // @route   GET /api/comments
 // @access  Private
@@ -52,15 +34,15 @@ const createComment = asyncHandler(async (req, res) => {
   res.status(200).json(post);
 });
 
-// @desc    Update post
-// @route   PUT /api/posts/:id
+// @desc    Update comment
+// @route   PUT /api/comments/:id
 // @access  Private
-const updatePost = asyncHandler(async (req, res) => {
-  const post = await Post.findById(req.params.id);
+const updateComment = asyncHandler(async (req, res) => {
+  const comment = await Comment.findById(req.params.id);
 
-  if (!post) {
+  if (!comment) {
     res.status(400);
-    throw new Error("Post not found");
+    throw new Error("Comment not found");
   }
 
   // Check for user
@@ -69,17 +51,21 @@ const updatePost = asyncHandler(async (req, res) => {
     throw new Error("User not found");
   }
 
-  // Make sure the logged in user matches the post user
-  if (post.user.toString() !== req.user.id) {
+  // Make sure the logged in user matches the comment user
+  if (comment.user.toString() !== req.user.id) {
     res.status(401);
     throw new Error("User not authorized");
   }
 
-  const updatedPost = await Post.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-  });
+  const updatedComment = await Comment.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    {
+      new: true,
+    }
+  );
 
-  res.status(200).json(updatedPost);
+  res.status(200).json(updatedComment);
 });
 
 // @desc    Delete post
@@ -113,6 +99,6 @@ const deletePost = asyncHandler(async (req, res) => {
 module.exports = {
   getCommentsOfPost,
   createComment,
-  updatePost,
+  updateComment,
   deletePost,
 };
