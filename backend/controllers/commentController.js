@@ -68,13 +68,13 @@ const updateComment = asyncHandler(async (req, res) => {
   res.status(200).json(updatedComment);
 });
 
-// @desc    Delete post
-// @route   DELETE /api/posts/:id
+// @desc    Delete comment
+// @route   DELETE /api/comments/:id
 // @access  Private
-const deletePost = asyncHandler(async (req, res) => {
-  const post = await Post.findById(req.params.id);
+const deleteComment = asyncHandler(async (req, res) => {
+  const comment = await Comment.findById(req.params.id);
 
-  if (!post) {
+  if (!comment) {
     res.status(400);
     throw new Error("Post not found");
   }
@@ -86,12 +86,12 @@ const deletePost = asyncHandler(async (req, res) => {
   }
 
   // Make sure the logged in user matches the post user
-  if (post.user.toString() !== req.user.id) {
+  if (comment.user.toString() !== req.user.id) {
     res.status(401);
     throw new Error("User not authorized");
   }
 
-  await post.remove();
+  await comment.remove();
 
   res.status(200).json({ id: req.params.id });
 });
@@ -100,5 +100,5 @@ module.exports = {
   getCommentsOfPost,
   createComment,
   updateComment,
-  deletePost,
+  deleteComment,
 };
